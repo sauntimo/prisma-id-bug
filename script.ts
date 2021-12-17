@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,23 +9,16 @@ const main = async () => {
    * so I should not have to pass a value to the id when I call prisma.user.create()
    * because it should be determined by the db on creation
    *
-   *! However, the User type has {id: number} which appears to be incorrect
+   * Using the  correct type Prisma.UserCreateInput I do not have to specify a value for id
    */
 
-  const newUser1: User = {
-    id: null, // Type 'null' is not assignable to type 'number'.ts(2322)
-    email: "test@example.com",
-    name: "John Doe",
-  };
-
-  // Property 'id' is missing in type '{ email: string; name: string; }' but required in type 'User'.ts(2741)
-  const newUser2: User = {
+  const newUser: Prisma.UserCreateInput = {
     email: "test@example.com",
     name: "John Doe",
   };
 
   prisma.user.create({
-    data: newUser1,
+    data: newUser,
   });
 };
 
